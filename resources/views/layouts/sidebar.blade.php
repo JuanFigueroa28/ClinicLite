@@ -1,4 +1,20 @@
-<!-- Sidebar -->
+{{--
+    SIDEBAR GENERAL - CLINICLITE
+    ---------------------------------------------------------------------
+    Este menú lateral incluye todas las secciones principales del sistema,
+    organizadas según los módulos de la matriz.
+
+    RESPONSABILIDADES:
+    - FRONTEND: mantener diseño, estructura y activación visual.
+    - BACKEND: conectar los enlaces con las rutas y controladores reales.
+
+    SECCIONES:
+    1. Gestión Clínica: Pacientes, Doctores, Citas, Agenda.
+    2. Administración: Usuarios, Roles y Permisos.
+    3. Cuenta: Perfil y Cerrar Sesión.
+--}}
+
+
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
@@ -69,6 +85,72 @@
                 <a class="collapse-item" href="{{ url('/admin/citas/nueva') }}">Nueva cita</a>
             </div>
         </div>
+    </li>
+
+    <!-- Agenda -->
+    <li class="nav-item {{ request()->is('admin/agenda*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ url('/admin/agenda') }}">
+            <i class="fas fa-calendar-alt"></i>
+            <span>Agenda / Horarios</span>
+        </a>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Heading -->
+    <div class="sidebar-heading">Administración</div>
+
+    <!-- Usuarios -->
+    <li class="nav-item {{ request()->is('admin/usuarios*') ? 'active' : '' }}">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUsuarios"
+            aria-expanded="true" aria-controls="collapseUsuarios">
+            <i class="fas fa-users"></i>
+            <span>Usuarios</span>
+        </a>
+        <div id="collapseUsuarios" class="collapse" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="{{ url('/admin/usuarios') }}">Lista</a>
+                <a class="collapse-item" href="{{ url('/admin/usuarios/nuevo') }}">Nuevo usuario</a>
+            </div>
+        </div>
+    </li>
+
+    <!-- Roles y Permisos -->
+    <li class="nav-item {{ request()->is('admin/roles*') ? 'active' : '' }}">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseRoles"
+            aria-expanded="true" aria-controls="collapseRoles">
+            <i class="fas fa-user-shield"></i>
+            <span>Roles y Permisos</span>
+        </a>
+        <div id="collapseRoles" class="collapse" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="{{ url('/admin/roles') }}">Lista</a>
+                <a class="collapse-item" href="{{ url('/admin/roles/nuevo') }}">Nuevo rol</a>
+            </div>
+        </div>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Heading -->
+    <div class="sidebar-heading">Cuenta</div>
+
+    <!-- Perfil -->
+    <li class="nav-item {{ request()->is('admin/perfil*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ url('/admin/perfil') }}">
+            <i class="fas fa-user-circle"></i>
+            <span>Perfil</span>
+        </a>
+    </li>
+
+    <!-- Logout -->
+    <li class="nav-item">
+        <a class="nav-link" href="{{ url('/logout') }}">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Cerrar sesión</span>
+        </a>
     </li>
 
     <!-- Divider -->
