@@ -1,14 +1,3 @@
-{{--
-    VISTA: Crear nuevo Rol
-    ---------------------------------------------------------------------
-    Esta vista permite registrar un nuevo rol/categoría dentro del sistema.
-    El diseño evita checkboxes y se basa en categorías predefinidas.
-
-    RESPONSABILIDADES:
-    - FRONTEND: estructura visual.
-    - BACKEND: guardar el nuevo rol en la base de datos.
---}}
-
 @extends('layouts.app')
 
 @section('title', 'Nuevo Rol - ClinicLite')
@@ -17,43 +6,69 @@
 <h1 class="h3 mb-4 text-gray-800">Registrar nuevo rol</h1>
 
 <div class="card shadow p-4 border-left-warning">
-    <form>
-        {{--
-            El encargado debe agregar:
-            - method="POST"
-            - action="{{ route('roles.store') }}"
-            - @csrf
-        --}}
+    {{--
+        FORMULARIO PARA CREAR UN NUEVO ROL
+        ---------------------------------------------------------------------
+        Este formulario envía los datos al controlador RolesController@store
+        usando el método POST. Se protege con @csrf contra ataques CSRF.
+    --}}
+    <form method="POST" action="{{ route('roles.store') }}">
+        @csrf
+
+        {{-- Campo: Nombre del rol --}}
         <div class="mb-3">
-            <label for="nombre" class="form-label">Nombre del rol</label>
-            {{-- El encargado debe agregar name="nombre" --}}
-            <input type="text" id="nombre" class="form-control" placeholder="Ej: Coordinador, Visitante, etc.">
+            <label for="name" class="form-label">Nombre del rol</label>
+            <input
+                type="text"
+                id="name"
+                name="name"
+                class="form-control @error('name') is-invalid @enderror"
+                placeholder="Ej: Administrador, Doctor, Paciente..."
+                value="{{ old('name') }}"
+                required
+            >
+            @error('name')
+                <small class="text-danger">{{ $message }}</small>
+            @enderror
         </div>
 
+        {{-- Campo: Descripción del rol --}}
         <div class="mb-3">
-            <label for="descripcion" class="form-label">Descripción</label>
-            {{-- El encargado debe agregar name="descripcion" --}}
-            <textarea id="descripcion" class="form-control" rows="3" placeholder="Breve descripción del rol y sus responsabilidades"></textarea>
+            <label for="description" class="form-label">Descripción</label>
+            <textarea
+                id="description"
+                name="description"
+                class="form-control @error('description') is-invalid @enderror"
+                rows="3"
+                placeholder="Breve descripción del rol y sus responsabilidades"
+            >{{ old('description') }}</textarea>
+            @error('description')
+                <small class="text-danger">{{ $message }}</small>
+            @enderror
         </div>
 
+        {{-- Campo: Categoría base (referencia visual, no obligatoria) --}}
         <div class="mb-3">
-            <label for="categoria" class="form-label">Categoría base</label>
-            {{--
-                El encargado debe agregar name="categoria".
-                Las categorías sirven como referencia de permisos predeterminados.
-            --}}
-            <select id="categoria" class="form-control">
+            <label for="category" class="form-label">Categoría base</label>
+            <select id="category" name="category" class="form-control">
                 <option value="">Seleccione una categoría</option>
-                <option value="administrador">Administrador</option>
-                <option value="doctor">Doctor</option>
-                <option value="paciente">Paciente</option>
-                <option value="recepcionista">Recepcionista</option>
-                <option value="invitado">Invitado</option>
+                <option value="Administrador">Administrador</option>
+                <option value="Doctor">Doctor</option>
+                <option value="Paciente">Paciente</option>
+                <option value="Recepcionista">Recepcionista</option>
+                <option value="Invitado">Invitado</option>
             </select>
         </div>
 
-        <button type="submit" class="btn btn-warning">Guardar</button>
-        <a href="{{ url('/admin/roles') }}" class="btn btn-outline-warning">Cancelar</a>
+        {{-- Botones de acción --}}
+        <div class="d-flex justify-content-start">
+            <button type="submit" class="btn btn-warning me-2">
+                <i class="fas fa-save"></i> Guardar
+            </button>
+            <a href="{{ route('roles.index') }}" class="btn btn-outline-warning">
+                <i class="fas fa-times"></i> Cancelar
+            </a>
+        </div>
     </form>
 </div>
 @endsection

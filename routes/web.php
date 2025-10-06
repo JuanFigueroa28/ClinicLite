@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\{DashboardController, UsersController, RolesController, AppointmentController};
+use App\Models\{Users, Doctors, Appointments, Roles, Permissions};
+
 
 // -----------------------------------------------------------------------------
 // RUTAS PRINCIPALES DEL SISTEMA (panel administrativo)
@@ -15,7 +18,8 @@ Route::prefix('admin')->group(function () {
     // DASHBOARD
     // -------------------------------------------------------------------------
     // Muestra las estadísticas generales del sistema (ya implementado visualmente)
-    Route::view('/', 'admin.dashboard')->name('dashboard');
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+
 
     // PACIENTES
     // -------------------------------------------------------------------------
@@ -44,11 +48,9 @@ Route::prefix('admin')->group(function () {
 
     // ROLES Y PERMISOS
     // -------------------------------------------------------------------------
-    // Manejo de roles y categorías del sistema.
-    // Backend debe implementar controlador RolController.
-    Route::view('/roles', 'admin.roles.index')->name('roles.index');
-    Route::view('/roles/nuevo', 'admin.roles.create')->name('roles.create');
-    Route::view('/roles/editar', 'admin.roles.edit')->name('roles.edit');
+    Route::get('/roles/nuevo', [RolesController::class, 'create'])->name('roles.create');
+    Route::resource('roles', RolesController::class)->except(['create', 'show']);
+
 
     // AGENDA Y HORARIOS
     // -------------------------------------------------------------------------

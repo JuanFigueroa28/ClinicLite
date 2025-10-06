@@ -1,14 +1,3 @@
-{{--
-    VISTA: Editar Rol
-    ---------------------------------------------------------------------
-    Esta vista permite modificar el nombre, descripción o categoría base
-    de un rol existente.
-
-    RESPONSABILIDADES:
-    - FRONTEND: mantener la estructura visual.
-    - BACKEND: precargar datos del rol seleccionado y guardar los cambios.
---}}
-
 @extends('layouts.app')
 
 @section('title', 'Editar Rol - ClinicLite')
@@ -17,37 +6,68 @@
 <h1 class="h3 mb-4 text-gray-800">Editar rol</h1>
 
 <div class="card shadow p-4 border-left-warning">
-    <form>
-        {{--
-            El encargado debe agregar:
-            - method="POST"
-            - action="{{ route('roles.update', $rol->id ?? '') }}"
-            - @method('PUT')
-            - @csrf
-        --}}
+    {{--
+        FORMULARIO PARA EDITAR UN ROL EXISTENTE
+        ---------------------------------------------------------------------
+        Este formulario precarga los datos del rol recibido desde el controlador
+        RolesController@edit y envía la actualización a RolesController@update.
+    --}}
+    <form method="POST" action="{{ route('roles.update', $rol->id) }}">
+        @csrf
+        @method('PUT')
+
+        {{-- Campo: Nombre del rol --}}
         <div class="mb-3">
-            <label for="nombre" class="form-label">Nombre del rol</label>
-            <input type="text" id="nombre" class="form-control" value="Doctor">
+            <label for="name" class="form-label">Nombre del rol</label>
+            <input
+                type="text"
+                id="name"
+                name="name"
+                value="{{ old('name', $rol->name) }}"
+                class="form-control @error('name') is-invalid @enderror"
+                required
+            >
+            @error('name')
+                <small class="text-danger">{{ $message }}</small>
+            @enderror
         </div>
 
+        {{-- Campo: Descripción --}}
         <div class="mb-3">
-            <label for="descripcion" class="form-label">Descripción</label>
-            <textarea id="descripcion" class="form-control" rows="3">Accede a su listado de pacientes, agenda y diagnósticos.</textarea>
+            <label for="description" class="form-label">Descripción</label>
+            <textarea
+                id="description"
+                name="description"
+                class="form-control @error('description') is-invalid @enderror"
+                rows="3"
+            >{{ old('description', $rol->description) }}</textarea>
+            @error('description')
+                <small class="text-danger">{{ $message }}</small>
+            @enderror
         </div>
 
+        {{-- Campo: Categoría base (opcional, visual) --}}
         <div class="mb-3">
-            <label for="categoria" class="form-label">Categoría base</label>
-            <select id="categoria" class="form-control">
-                <option value="administrador">Administrador</option>
-                <option value="doctor" selected>Doctor</option>
-                <option value="paciente">Paciente</option>
-                <option value="recepcionista">Recepcionista</option>
-                <option value="invitado">Invitado</option>
+            <label for="category" class="form-label">Categoría base</label>
+            <select id="category" name="category" class="form-control">
+                <option value="">Seleccione una categoría</option>
+                <option value="Administrador" {{ $rol->name === 'Administrador' ? 'selected' : '' }}>Administrador</option>
+                <option value="Doctor" {{ $rol->name === 'Doctor' ? 'selected' : '' }}>Doctor</option>
+                <option value="Paciente" {{ $rol->name === 'Paciente' ? 'selected' : '' }}>Paciente</option>
+                <option value="Recepcionista" {{ $rol->name === 'Recepcionista' ? 'selected' : '' }}>Recepcionista</option>
+                <option value="Invitado" {{ $rol->name === 'Invitado' ? 'selected' : '' }}>Invitado</option>
             </select>
         </div>
 
-        <button type="submit" class="btn btn-warning">Guardar cambios</button>
-        <a href="{{ url('/admin/roles') }}" class="btn btn-outline-warning">Cancelar</a>
+        {{-- Botones de acción --}}
+        <div class="d-flex justify-content-start">
+            <button type="submit" class="btn btn-warning me-2">
+                <i class="fas fa-save"></i> Guardar cambios
+            </button>
+            <a href="{{ route('roles.index') }}" class="btn btn-outline-warning">
+                <i class="fas fa-times"></i> Cancelar
+            </a>
+        </div>
     </form>
 </div>
 @endsection

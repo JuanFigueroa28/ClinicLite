@@ -7,20 +7,14 @@
     RESPONSABILIDADES:
     - FRONTEND: mantener diseño, estructura y activación visual.
     - BACKEND: conectar los enlaces con las rutas y controladores reales.
-
-    SECCIONES:
-    1. Gestión Clínica: Pacientes, Doctores, Citas, Agenda.
-    2. Administración: Usuarios, Roles y Permisos.
-    3. Cuenta: Perfil y Cerrar Sesión.
 --}}
-
 
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ url('/admin') }}">
         <div class="sidebar-brand-icon rotate-n-15">
-            <i class="fas fa-laugh-wink"></i>
+            <i class="fas fa-stethoscope"></i>
         </div>
         <div class="sidebar-brand-text mx-3">ClinicLite</div>
     </a>
@@ -44,12 +38,12 @@
 
     <!-- Pacientes -->
     <li class="nav-item {{ request()->is('admin/pacientes*') ? 'active' : '' }}">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePacientes"
-            aria-expanded="true" aria-controls="collapsePacientes">
+        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePacientes"
+           aria-expanded="true" aria-controls="collapsePacientes">
             <i class="fas fa-user-injured"></i>
             <span>Pacientes</span>
         </a>
-        <div id="collapsePacientes" class="collapse" data-parent="#accordionSidebar">
+        <div id="collapsePacientes" class="collapse" data-bs-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{{ url('/admin/pacientes') }}">Lista</a>
                 <a class="collapse-item" href="{{ url('/admin/pacientes/nuevo') }}">Nuevo paciente</a>
@@ -59,12 +53,12 @@
 
     <!-- Doctores -->
     <li class="nav-item {{ request()->is('admin/doctores*') ? 'active' : '' }}">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseDoctores"
-            aria-expanded="true" aria-controls="collapseDoctores">
+        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseDoctores"
+           aria-expanded="true" aria-controls="collapseDoctores">
             <i class="fas fa-user-md"></i>
             <span>Doctores</span>
         </a>
-        <div id="collapseDoctores" class="collapse" data-parent="#accordionSidebar">
+        <div id="collapseDoctores" class="collapse" data-bs-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{{ url('/admin/doctores') }}">Lista</a>
                 <a class="collapse-item" href="{{ url('/admin/doctores/nuevo') }}">Nuevo doctor</a>
@@ -74,12 +68,12 @@
 
     <!-- Citas -->
     <li class="nav-item {{ request()->is('admin/citas*') ? 'active' : '' }}">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCitas"
-            aria-expanded="true" aria-controls="collapseCitas">
+        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseCitas"
+           aria-expanded="true" aria-controls="collapseCitas">
             <i class="fas fa-calendar-check"></i>
             <span>Citas</span>
         </a>
-        <div id="collapseCitas" class="collapse" data-parent="#accordionSidebar">
+        <div id="collapseCitas" class="collapse" data-bs-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{{ url('/admin/citas') }}">Lista</a>
                 <a class="collapse-item" href="{{ url('/admin/citas/nueva') }}">Nueva cita</a>
@@ -103,12 +97,12 @@
 
     <!-- Usuarios -->
     <li class="nav-item {{ request()->is('admin/usuarios*') ? 'active' : '' }}">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUsuarios"
-            aria-expanded="true" aria-controls="collapseUsuarios">
+        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseUsuarios"
+           aria-expanded="true" aria-controls="collapseUsuarios">
             <i class="fas fa-users"></i>
             <span>Usuarios</span>
         </a>
-        <div id="collapseUsuarios" class="collapse" data-parent="#accordionSidebar">
+        <div id="collapseUsuarios" class="collapse" data-bs-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{{ url('/admin/usuarios') }}">Lista</a>
                 <a class="collapse-item" href="{{ url('/admin/usuarios/nuevo') }}">Nuevo usuario</a>
@@ -118,15 +112,15 @@
 
     <!-- Roles y Permisos -->
     <li class="nav-item {{ request()->is('admin/roles*') ? 'active' : '' }}">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseRoles"
-            aria-expanded="true" aria-controls="collapseRoles">
+        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseRoles"
+           aria-expanded="true" aria-controls="collapseRoles">
             <i class="fas fa-user-shield"></i>
             <span>Roles y Permisos</span>
         </a>
-        <div id="collapseRoles" class="collapse" data-parent="#accordionSidebar">
+        <div id="collapseRoles" class="collapse" data-bs-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{{ url('/admin/roles') }}">Lista</a>
-                <a class="collapse-item" href="{{ url('/admin/roles/nuevo') }}">Nuevo rol</a>
+                <a class="collapse-item" href="{{ route('roles.create') }}">Nuevo rol</a>
             </div>
         </div>
     </li>
