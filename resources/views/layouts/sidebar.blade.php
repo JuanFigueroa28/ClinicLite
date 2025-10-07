@@ -81,14 +81,6 @@
         </div>
     </li>
 
-    <!-- Agenda -->
-    <li class="nav-item {{ request()->is('admin/agenda*') ? 'active' : '' }}">
-        <a class="nav-link" href="{{ url('/admin/agenda') }}">
-            <i class="fas fa-calendar-alt"></i>
-            <span>Agenda / Horarios</span>
-        </a>
-    </li>
-
     <!-- Divider -->
     <hr class="sidebar-divider">
 
@@ -136,14 +128,6 @@
         <a class="nav-link" href="{{ url('/admin/perfil') }}">
             <i class="fas fa-user-circle"></i>
             <span>Perfil</span>
-        </a>
-    </li>
-
-    <!-- Logout -->
-    <li class="nav-item">
-        <a class="nav-link" href="{{ url('/logout') }}">
-            <i class="fas fa-sign-out-alt"></i>
-            <span>Cerrar sesión</span>
         </a>
     </li>
 

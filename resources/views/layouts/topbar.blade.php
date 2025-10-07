@@ -1,83 +1,70 @@
 <!-- Topbar -->
-<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow px-3 justify-content-between">
 
-    <!-- Sidebar Toggle (Topbar) -->
-    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-        <i class="fa fa-bars"></i>
-    </button>
+    <!-- Sección izquierda: Botón + Logo -->
+    <div class="d-flex align-items-center">
+        <!-- Sidebar Toggle (Topbar) -->
+        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle me-3">
+            <i class="fa fa-bars"></i>
+        </button>
 
-    <!-- Topbar Search -->
-    <form
-        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-        <div class="input-group">
-            <input type="text" class="form-control bg-light border-0 small" placeholder="Buscar..."
-                aria-label="Search" aria-describedby="basic-addon2">
-            <div class="input-group-append">
-                <button class="btn btn-primary" type="button">
-                    <i class="fas fa-search fa-sm"></i>
-                </button>
-            </div>
+        <!-- Logo / Título -->
+        <h5 class="m-0 fw-bold text-primary text-nowrap d-flex align-items-center">
+            <i class="fas fa-clinic-medical text-primary" style="margin-right: 0.5rem; font-size: 1.2rem;"></i>
+            <span>CL Dashboard</span>
+        </h5>
+
+    </div>
+
+    <!-- Sección central: Buscador (solo visible desde md) -->
+    <form class="d-none d-md-flex align-items-center w-50 mx-auto">
+        <div class="input-group w-100">
+            <input type="text" class="form-control bg-light border-0 small" placeholder="Buscar paciente..."
+                aria-label="Buscar paciente">
+            <button class="btn btn-primary" type="button">
+                <i class="fas fa-search fa-sm"></i>
+            </button>
         </div>
     </form>
 
-    <!-- Topbar Navbar -->
-    <ul class="navbar-nav ml-auto">
-
-        <!-- Nav Item - Alerts -->
-        <li class="nav-item dropdown no-arrow mx-1">
-            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-bell fa-fw"></i>
-                <!-- Counter - Alerts -->
-                <span class="badge badge-danger badge-counter">3+</span>
+    <!-- Sección derecha: Usuario -->
+    <ul class="navbar-nav align-items-center ms-auto">
+        <li class="nav-item dropdown no-arrow position-relative">
+            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown"
+                role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <img class="img-profile rounded-circle border border-primary" src="{{ asset('https://tse3.mm.bing.net/th/id/OIP.o5O-0C1UW1Fjx7mvthFDLwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3') }}"
+                    width="35" height="35" alt="Foto del usuario">
             </a>
-            <!-- Dropdown - Alerts -->
-            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                aria-labelledby="alertsDropdown">
-                <h6 class="dropdown-header">
-                    Centro de alertas
-                </h6>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                    <div class="mr-3">
-                        <div class="icon-circle bg-primary">
-                            <i class="fas fa-file-alt text-white"></i>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="small text-gray-500">Octubre 5, 2025</div>
-                        <span class="font-weight-bold">Nuevo informe mensual listo para descargar</span>
-                    </div>
-                </a>
-                <a class="dropdown-item text-center small text-gray-500" href="#">Ver todas</a>
-            </div>
-        </li>
 
-        <!-- Nav Item - User Information -->
-        <li class="nav-item dropdown no-arrow">
-            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Admin</span>
-                <img class="img-profile rounded-circle" src="{{ asset('img/undraw_profile.svg') }}">
-            </a>
             <!-- Dropdown - User Information -->
-            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="#">
-                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Perfil
-                </a>
-                <a class="dropdown-item" href="#">
-                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Configuración
-                </a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Cerrar sesión
-                </a>
-            </div>
+            <ul class="dropdown-menu dropdown-menu-end shadow animated--grow-in" aria-labelledby="userDropdown"
+                style="right: 0; left: auto; transform: translateX(-10px); min-width: 12rem;">
+                <li>
+                    <a class="dropdown-item" href="#">
+                        <i class="fas fa-user-md fa-sm fa-fw me-2 text-gray-400"></i>Mi perfil
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="#">
+                        <i class="fas fa-calendar-check fa-sm fa-fw me-2 text-gray-400"></i>Mis citas
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="#">
+                        <i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>Configuración
+                    </a>
+                </li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li>
+                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                        <i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>Cerrar sesión
+                    </a>
+                </li>
+            </ul>
         </li>
-
     </ul>
+
 </nav>
 <!-- End of Topbar -->

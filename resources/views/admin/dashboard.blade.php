@@ -3,7 +3,6 @@
 @section('title', 'Dashboard - ClinicLite')
 
 @section('content')
-    <h1 class="h3 mb-4 text-gray-800">Panel de Control</h1>
 
     {{-- SECCIÓN: TARJETAS DE RESUMEN --}}
     <div class="row">
