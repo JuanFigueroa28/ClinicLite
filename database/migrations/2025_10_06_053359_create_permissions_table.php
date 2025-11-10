@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('permissions', function (Blueprint $table) {
             $table->id('id');
             $table->string('name', 100); // Nombre del permiso (ejemplo: "edit_user")
-            $table->text('description')->nullable(); // Descripción del permiso
+            $table->string('slug', 64); // Accion que representa el permiso (ejemplo: "edit-user")
             $table->timestamps();
         });
     }
