@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use App\Helpers\RoleHelper;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -25,11 +26,27 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): RedirectResponse
     {
         $request->authenticate();
-
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        if (RoleHelper::currentUserIsAdmin()) {
+            return redirect()->route('admin.dashboard');
+        }
+
+        if (RoleHelper::currentUserIsMedico()) {
+            return redirect()->route('medico.dashboard');
+        }
+
+        if (RoleHelper::currentUserIsRecepcionista()) {
+            return redirect()->route('recepcionista.dashboard');
+        }
+
+        if (RoleHelper::currentUserIsPaciente()) {
+            return redirect()->route('paciente.dashboard');
+        }
+
+        return redirect()->route('dashboard');
     }
+
 
     /**
      * Destroy an authenticated session.

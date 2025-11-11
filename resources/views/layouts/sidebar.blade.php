@@ -1,18 +1,8 @@
-{{--
-    SIDEBAR GENERAL - CLINICLITE
-    ---------------------------------------------------------------------
-    Este menú lateral incluye todas las secciones principales del sistema,
-    organizadas según los módulos de la matriz.
-
-    RESPONSABILIDADES:
-    - FRONTEND: mantener diseño, estructura y activación visual.
-    - BACKEND: conectar los enlaces con las rutas y controladores reales.
---}}
-
+{{-- SIDEBAR GENERAL - CLINICLITE --}}
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ url('/admin') }}">
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('dashboard') }}">
         <div class="sidebar-brand-icon rotate-n-15">
             <i class="fas fa-stethoscope"></i>
         </div>
@@ -22,9 +12,9 @@
     <!-- Divider -->
     <hr class="sidebar-divider my-0">
 
-    <!-- Nav Item - Dashboard -->
-    <li class="nav-item {{ request()->is('admin') ? 'active' : '' }}">
-        <a class="nav-link" href="{{ url('/admin') }}">
+    <!-- Dashboard -->
+    <li class="nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('dashboard') }}">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span>
         </a>
@@ -32,103 +22,85 @@
 
     <!-- Divider -->
     <hr class="sidebar-divider">
-
-    <!-- Heading -->
     <div class="sidebar-heading">Gestión Clínica</div>
 
-    <!-- Pacientes -->
-    <li class="nav-item {{ request()->is('admin/pacientes*') ? 'active' : '' }}">
-        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePacientes"
-           aria-expanded="true" aria-controls="collapsePacientes">
-            <i class="fas fa-user-injured"></i>
-            <span>Pacientes</span>
-        </a>
-        <div id="collapsePacientes" class="collapse" data-bs-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="{{ url('/admin/pacientes') }}">Lista</a>
-                <a class="collapse-item" href="{{ url('/admin/pacientes/nuevo') }}">Nuevo paciente</a>
-            </div>
-        </div>
-    </li>
+    {{-- ===================== USUARIOS ===================== --}}
+    @if (\App\Helpers\RoleHelper::isAuthorized('view-users'))
+        <li class="nav-item {{ request()->is('users*') ? 'active' : '' }}">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUsuarios"
+                aria-expanded="{{ request()->is('users*') ? 'true' : 'false' }}" aria-controls="collapseUsuarios">
+                <i class="fas fa-users"></i>
+                <span>Usuarios</span>
+            </a>
 
-    <!-- Doctores -->
-    <li class="nav-item {{ request()->is('admin/doctores*') ? 'active' : '' }}">
-        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseDoctores"
-           aria-expanded="true" aria-controls="collapseDoctores">
-            <i class="fas fa-user-md"></i>
-            <span>Doctores</span>
-        </a>
-        <div id="collapseDoctores" class="collapse" data-bs-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="{{ url('/admin/doctores') }}">Lista</a>
-                <a class="collapse-item" href="{{ url('/admin/doctores/nuevo') }}">Nuevo doctor</a>
+            <div id="collapseUsuarios" class="collapse {{ request()->is('users*') ? 'show' : '' }}"
+                aria-labelledby="headingUsuarios" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Gestión de usuarios:</h6>
+                    <a class="collapse-item {{ request()->routeIs('users.index') ? 'active' : '' }}"
+                       href="{{ route('users.index') }}">
+                        Lista de usuarios
+                    </a>
+                    @if (\App\Helpers\RoleHelper::isAuthorized('create-user'))
+                        <a class="collapse-item {{ request()->routeIs('users.create') ? 'active' : '' }}"
+                           href="{{ route('users.create') }}">
+                            Nuevo usuario
+                        </a>
+                    @endif
+                </div>
             </div>
-        </div>
-    </li>
+        </li>
+    @endif
 
-    <!-- Citas -->
-    <li class="nav-item {{ request()->is('admin/citas*') ? 'active' : '' }}">
-        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseCitas"
-           aria-expanded="true" aria-controls="collapseCitas">
-            <i class="fas fa-calendar-check"></i>
-            <span>Citas</span>
-        </a>
-        <div id="collapseCitas" class="collapse" data-bs-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="{{ url('/admin/citas') }}">Lista</a>
-                <a class="collapse-item" href="{{ url('/admin/citas/nueva') }}">Nueva cita</a>
+    {{-- ===================== ROLES Y PERMISOS ===================== --}}
+    @if (\App\Helpers\RoleHelper::isAuthorized('view-roles'))
+        <li class="nav-item {{ request()->is('roles*') ? 'active' : '' }}">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseRoles"
+                aria-expanded="{{ request()->is('roles*') ? 'true' : 'false' }}" aria-controls="collapseRoles">
+                <i class="fas fa-user-shield"></i>
+                <span>Roles y Permisos</span>
+            </a>
+
+            <div id="collapseRoles" class="collapse {{ request()->is('roles*') ? 'show' : '' }}"
+                aria-labelledby="headingRoles" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Gestión de roles:</h6>
+                    <a class="collapse-item {{ request()->routeIs('roles.index') ? 'active' : '' }}"
+                       href="{{ route('roles.index') }}">
+                        Lista de roles
+                    </a>
+                    @if (\App\Helpers\RoleHelper::isAuthorized('create-role'))
+                        <a class="collapse-item {{ request()->routeIs('roles.create') ? 'active' : '' }}"
+                           href="{{ route('roles.create') }}">
+                            Nuevo rol
+                        </a>
+                    @endif
+                </div>
             </div>
-        </div>
-    </li>
+        </li>
+    @endif
 
     <!-- Divider -->
     <hr class="sidebar-divider">
 
-    <!-- Heading -->
-    <div class="sidebar-heading">Administración</div>
-
-    <!-- Usuarios -->
-    <li class="nav-item {{ request()->is('admin/usuarios*') ? 'active' : '' }}">
-        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseUsuarios"
-           aria-expanded="true" aria-controls="collapseUsuarios">
-            <i class="fas fa-users"></i>
-            <span>Usuarios</span>
-        </a>
-        <div id="collapseUsuarios" class="collapse" data-bs-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="{{ url('/admin/usuarios') }}">Lista</a>
-                <a class="collapse-item" href="{{ url('/admin/usuarios/nuevo') }}">Nuevo usuario</a>
-            </div>
-        </div>
-    </li>
-
-    <!-- Roles y Permisos -->
-    <li class="nav-item {{ request()->is('admin/roles*') ? 'active' : '' }}">
-        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseRoles"
-           aria-expanded="true" aria-controls="collapseRoles">
-            <i class="fas fa-user-shield"></i>
-            <span>Roles y Permisos</span>
-        </a>
-        <div id="collapseRoles" class="collapse" data-bs-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="{{ url('/admin/roles') }}">Lista</a>
-                <a class="collapse-item" href="{{ route('roles.create') }}">Nuevo rol</a>
-            </div>
-        </div>
-    </li>
-
-    <!-- Divider -->
-    <hr class="sidebar-divider">
-
-    <!-- Heading -->
     <div class="sidebar-heading">Cuenta</div>
 
     <!-- Perfil -->
-    <li class="nav-item {{ request()->is('admin/perfil*') ? 'active' : '' }}">
-        <a class="nav-link" href="{{ url('/admin/perfil') }}">
+    <li class="nav-item {{ request()->routeIs('profile.edit') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('profile.edit') }}">
             <i class="fas fa-user-circle"></i>
             <span>Perfil</span>
         </a>
+    </li>
+
+    <!-- Logout -->
+    <li class="nav-item">
+        <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button type="submit" class="nav-link btn btn-link text-start text-white w-100">
+                <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+            </button>
+        </form>
     </li>
 
     <!-- Divider -->
@@ -140,4 +112,3 @@
     </div>
 
 </ul>
-<!-- End of Sidebar -->

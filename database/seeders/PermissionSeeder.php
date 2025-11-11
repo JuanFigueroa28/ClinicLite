@@ -67,7 +67,7 @@ class PermissionSeeder extends Seeder
 
         // Recepcionista → módulos: usuarios, citas, médicos/especialidades, agenda
         $recepcionista->permissions()->sync(Permission::whereIn('slug', [
-            'logout',
+            'login', 'logout',
             'view-users', 'create-user', 'edit-user', 'delete-user',
             'view-specialties', 'create-specialty', 'edit-specialty', 'delete-specialty',
             'view-appointments', 'create-appointment', 'reschedule-appointment',

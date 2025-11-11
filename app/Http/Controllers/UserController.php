@@ -7,6 +7,7 @@ use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\QueryException;
+use App\Helpers\RoleHelper;
 
 class UserController extends Controller
 {
@@ -15,11 +16,15 @@ class UserController extends Controller
      */
     public function index()
     {
+        if (!RoleHelper::isAuthorized('view-users')) {
+            abort(403, 'No tienes permiso para ver la lista de usuarios.');
+        }
+
         $users = User::with('role')
             ->orderBy('first_name')
             ->get();
 
-        return view('admin.users.index', compact('users'));
+        return view(' users.index', compact('users'));
     }
 
     /**
@@ -27,9 +32,12 @@ class UserController extends Controller
      */
     public function create()
     {
-        $roles = Role::orderBy('name')->get();
+        if (!RoleHelper::isAuthorized('create-user')) {
+            abort(403, 'No tienes permiso para crear usuarios.');
+        }
 
-        return view('admin.users.create', compact('roles'));
+        $roles = Role::orderBy('name')->get();
+        return view(' users.create', compact('roles'));
     }
 
     /**
@@ -37,6 +45,10 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        if (!RoleHelper::isAuthorized('create-user')) {
+            abort(403, 'No tienes permiso para crear usuarios.');
+        }
+
         $request->validate([
             'first_name' => 'required|string|max:100',
             'last_name' => 'required|string|max:100',
@@ -61,7 +73,8 @@ class UserController extends Controller
             'status' => $request->status ?? true,
         ]);
 
-        return redirect()->route('users.index')->with('success', 'Usuario creado correctamente.');
+        return redirect()->route('users.index')
+            ->with('success', 'Usuario creado correctamente.');
     }
 
     /**
@@ -69,10 +82,14 @@ class UserController extends Controller
      */
     public function edit($id)
     {
+        if (!RoleHelper::isAuthorized('edit-user')) {
+            abort(403, 'No tienes permiso para editar usuarios.');
+        }
+
         $user = User::findOrFail($id);
         $roles = Role::orderBy('name')->get();
 
-        return view('admin.users.edit', compact('user', 'roles'));
+        return view(' users.edit', compact('user', 'roles'));
     }
 
     /**
@@ -80,6 +97,10 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (!RoleHelper::isAuthorized('edit-user')) {
+            abort(403, 'No tienes permiso para actualizar usuarios.');
+        }
+
         $user = User::findOrFail($id);
 
         $request->validate([
@@ -113,7 +134,8 @@ class UserController extends Controller
             ]);
         }
 
-        return redirect()->route('users.index')->with('success', 'Usuario actualizado correctamente.');
+        return redirect()->route('users.index')
+            ->with('success', 'Usuario actualizado correctamente.');
     }
 
     /**
@@ -121,6 +143,10 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
+        if (!RoleHelper::isAuthorized('delete-user')) {
+            abort(403, 'No tienes permiso para eliminar usuarios.');
+        }
+
         $user = User::findOrFail($id);
 
         try {
@@ -132,7 +158,8 @@ class UserController extends Controller
 
             $user->delete();
 
-            return redirect()->route('users.index')->with('success', 'Usuario eliminado correctamente.');
+            return redirect()->route('users.index')
+                ->with('success', 'Usuario eliminado correctamente.');
 
         } catch (QueryException $ex) {
             return redirect()->route('users.index')

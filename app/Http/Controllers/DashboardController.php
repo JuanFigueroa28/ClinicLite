@@ -2,62 +2,68 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Users;
-use App\Models\Doctors;
-use App\Models\Appointments;
+use App\Models\User;
+use App\Models\Doctor;
+use App\Models\Appointment;
+use Illuminate\Support\Facades\Auth;
+use App\Helpers\RoleHelper;
 
 class DashboardController extends Controller
 {
-    /**
-     * Muestra el panel principal con estadísticas generales.
-     */
     public function index()
     {
-        // ---------------------------------------------------------------------
-        // OBTENCIÓN DE DATOS REALES DESDE LOS MODELOS (ELOQUENT)
-        // ---------------------------------------------------------------------
+        $user = Auth::user();
 
-        // Total de pacientes registrados (usuarios con rol "Paciente")
-        $totalPacientes = Users::whereHas('role', function($q) {
+        // Totales generales (puedes mantenerlos si quieres mostrarlos en la vista)
+        $totalPacientes = User::whereHas('role', function ($q) {
             $q->where('name', 'Paciente');
         })->count();
 
-        // Total de doctores activos
-        $totalDoctores = Doctors::count();
+        $totalDoctores = Doctor::count();
+        $totalCitas = Appointment::where('status', 'programada')->count();
+        $totalCitasCompletadas = Appointment::where('status', 'completada')->count();
 
-        // Total de citas programadas (status = scheduled)
-        $citasProgramadas = Appointments::where('status', 'scheduled')->count();
+        // 🔹 Detectar el rol y enviar la vista correspondiente
+        if (RoleHelper::currentUserIsAdmin()) {
+            return view('admin.dashboard', compact(
+                'user',
+                'totalPacientes',
+                'totalDoctores',
+                'totalCitas',
+                'totalCitasCompletadas'
+            ));
+        }
 
-        // Total de citas completadas (status = completed)
-        $citasCompletadas = Appointments::where('status', 'completed')->count();
+        // Puedes agregar más vistas personalizadas por rol si lo deseas:
+        if (RoleHelper::currentUserIsMedico()) {
+            return view('medico.dashboard', compact(
+                'user'
+                )
+            );
+        }
 
-        // Próximas citas (últimas 5 ordenadas por fecha)
-        $proximasCitas = Appointments::with(['patient', 'doctor.user'])
-            ->orderBy('appointment_date', 'asc')
-            ->take(5)
-            ->get();
 
-        // Datos para el gráfico (conteo de citas por día de la semana)
-        $citasPorDia = Appointments::selectRaw('DAYNAME(appointment_date) as dia, COUNT(*) as total')
-            ->groupBy('dia')
-            ->pluck('total', 'dia');
+        if (RoleHelper::currentUserIsRecepcionista()) {
+            return view('recepcionista.dashboard', compact(
+                'user',
+                'totalPacientes',
+                'totalDoctores',
+                'totalCitas',
+            )
 
-        // Convertimos los valores a arrays compatibles con Chart.js
-        $labels = $citasPorDia->keys();
-        $datosCitas = $citasPorDia->values();
+        );
+        }
 
-        // ---------------------------------------------------------------------
-        // Enviamos los datos a la vista usando compact()
-        // ---------------------------------------------------------------------
-        return view('admin.dashboard', compact(
-            'totalPacientes',
-            'totalDoctores',
-            'citasProgramadas',
-            'citasCompletadas',
-            'proximasCitas',
-            'labels',
-            'datosCitas'
+        if (RoleHelper::currentUserIsPaciente()) {
+            return view('paciente.dashboard', compact(
+                'user'
+                )
+            );
+        }
+
+        // 🔹 Por defecto (si no tiene rol específico)
+        return view('dashboard', compact(
+
         ));
     }
 }
