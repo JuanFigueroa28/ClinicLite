@@ -80,6 +80,42 @@
         </li>
     @endif
 
+    {{-- ===================== AGENDA Y HORARIOS ===================== --}}
+     @if (\App\Helpers\RoleHelper::isAuthorized('view-agenda') || \App\Helpers\RoleHelper::isAuthorized('view-my-agenda'))
+        <li class="nav-item {{ request()->is('doctor_hours*') ? 'active' : '' }}">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseHorarios"
+                aria-expanded="{{ request()->is('doctor_hours*') ? 'true' : 'false' }}" aria-controls="collapseHorarios">
+                <i class="fas fa-calendar-alt"></i>
+                <span>Agenda y Horarios</span>
+            </a>
+
+            <div id="collapseHorarios" class="collapse {{ request()->is('doctor_hours*') ? 'show' : '' }}"
+                aria-labelledby="headingHorarios" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Gestión de horarios:</h6>
+                    @if (\App\Helpers\RoleHelper::isAuthorized('view-agenda'))
+                        <a class="collapse-item {{ request()->routeIs('doctor_hours.index') ? 'active' : '' }}"
+                           href="{{ route('doctor_hours.index') }}">
+                            Lista de horarios
+                        </a>
+                    @endif
+                    @if (\App\Helpers\RoleHelper::isAuthorized('manage-schedule'))
+                        <a class="collapse-item {{ request()->routeIs('doctor_hours.create') ? 'active' : '' }}"
+                           href="{{ route('doctor_hours.create') }}">
+                            Nuevo horario
+                        </a>
+                    @endif
+                    @if (\App\Helpers\RoleHelper::isAuthorized('view-my-agenda'))
+                        <a class="collapse-item {{ request()->routeIs('doctor_hours.my') ? 'active' : '' }}"
+                           href="{{ route('doctor_hours.my') }}">
+                            Mi agenda
+                        </a>
+                    @endif
+                </div>
+            </div>
+        </li>
+    @endif
+
     <!-- Divider -->
     <hr class="sidebar-divider">
 

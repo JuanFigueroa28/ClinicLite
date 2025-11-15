@@ -11,9 +11,11 @@ class Doctor_Hours extends Model
 
     protected $table = 'doctor_hours';
 
+    // Campos permitidos para asignación masiva, incluyendo 'date' para agendas por fecha
     protected $fillable = [
         'doctor_id',
         'week_day',
+        'date',
         'start_time',
         'end_time',
         'duration_minutes'

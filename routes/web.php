@@ -52,6 +52,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     require __DIR__ . '/web/users.php';
     require __DIR__ . '/web/roles.php';
     require __DIR__ . '/web/permissions.php';
+    require __DIR__ . '/web/doctor_hours.php';
 
     // Dashboards separados por rol
     require __DIR__ . '/web/admin.php';

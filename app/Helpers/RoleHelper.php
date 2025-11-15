@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Exception;
 
 class RoleHelper
@@ -30,7 +31,8 @@ class RoleHelper
      */
     public static function currentUserIsAdmin(): bool
     {
-        return strtolower(self::currentRoleName() ?? '') === 'administrador';
+        $role = Str::lower(Str::ascii(self::currentRoleName() ?? ''));
+        return in_array($role, ['administrador', 'admin'], true);
     }
 
     /**
@@ -38,7 +40,8 @@ class RoleHelper
      */
     public static function currentUserIsRecepcionista(): bool
     {
-        return strtolower(self::currentRoleName() ?? '') === 'recepcionista';
+        $role = Str::lower(Str::ascii(self::currentRoleName() ?? ''));
+        return $role === 'recepcionista';
     }
 
     /**
@@ -46,7 +49,8 @@ class RoleHelper
      */
     public static function currentUserIsMedico(): bool
     {
-        return strtolower(self::currentRoleName() ?? '') === 'médico';
+        $role = Str::lower(Str::ascii(self::currentRoleName() ?? ''));
+        return in_array($role, ['medico', 'médico'], true);
     }
 
     /**
@@ -54,7 +58,8 @@ class RoleHelper
      */
     public static function currentUserIsPaciente(): bool
     {
-        return strtolower(self::currentRoleName() ?? '') === 'paciente';
+        $role = Str::lower(Str::ascii(self::currentRoleName() ?? ''));
+        return $role === 'paciente';
     }
 
     /**
@@ -65,9 +70,6 @@ class RoleHelper
     {
         try {
             if (!Auth::check()) return false;
-
-            // Si es admin, siempre autorizado
-            if (self::currentUserIsAdmin()) return true;
 
             $user = Auth::user();
             $permissions = $user->role?->permissions ?? collect();

@@ -62,26 +62,24 @@ class PermissionSeeder extends Seeder
         $medico = Role::where('name', 'Médico')->first();
         $paciente = Role::where('name', 'Paciente')->first();
 
-        // Admin → todos los permisos
-        $admin->permissions()->sync(Permission::pluck('id'));
+        // Admin → todos los permisos excepto "ver mi agenda"
+        $admin->permissions()->sync(
+            Permission::whereNotIn('slug', ['view-my-agenda'])->pluck('id')
+        );
 
-        // Recepcionista → módulos: usuarios, citas, médicos/especialidades, agenda
+        // Recepcionista → solo ver agendas por médico (gestión)
         $recepcionista->permissions()->sync(Permission::whereIn('slug', [
             'login', 'logout',
-            'view-users', 'create-user', 'edit-user', 'delete-user',
-            'view-specialties', 'create-specialty', 'edit-specialty', 'delete-specialty',
-            'view-appointments', 'create-appointment', 'reschedule-appointment',
-            'view-agenda', 'manage-schedule',
+            'view-agenda',
         ])->pluck('id'));
 
-        // Médico → agenda propia, pacientes y citas asignadas
+        // Médico → ver agendas, gestionar y eliminar horarios, ver su agenda
         $medico->permissions()->sync(Permission::whereIn('slug', [
             'logout',
+            'view-agenda',
+            'manage-schedule',
+            'delete-schedule',
             'view-my-agenda',
-            'view-specialties',
-            'view-appointments',
-            'close-appointment',
-            'view-my-appointments',
         ])->pluck('id'));
 
         // Paciente → perfil, registro y citas personales
